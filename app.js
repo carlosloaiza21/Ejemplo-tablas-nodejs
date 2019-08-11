@@ -1,24 +1,19 @@
-const { crearArchivo } = require('./multiplicar/multiplicar') // require { } (desestructuracion)
+const argv = require('./config/yargs').argv
+const { crearArchivo, listar } = require('./multiplicar/multiplicar') // require { } (desestructuracion)
 
-const argv = require('yargs')
-  .command('listar','listado',{
-    base:{
-      demand: true,
-      alias: 'b'
-    },
-    limite:{
-      default: 10
-    }
-  }).command('crear','carlos',()=>console.log('sii'))
-  .help()
-  .argv
+const comando =argv._[0];
 
-
-console.log(argv.base);
-console.log(argv.limite);
-
+switch (comando) {
+  case 'listar':
+    listar(argv.base, argv.limite)
+    break;
+  case 'crear':
+  crearArchivo(argv.base, argv.limite)
+    .then((res)=>{console.log(res)})
+    .catch(err=>console.log(err))
+  break;
+  default:
+    console.log('commando no reconocido');
+}
 
 
-// crearArchivo(base)
-//   .then((res)=>{console.log(res)})
-//   .catch(err=>console.log(err))
